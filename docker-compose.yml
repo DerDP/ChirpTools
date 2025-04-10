@@ -1,0 +1,17 @@
+services:
+  chirp-tools:
+    # Build the image using the Dockerfile in the current directory
+    build:
+      context: .
+      dockerfile: Dockerfile  # Optional, can be omitted if the file is named "Dockerfile"
+    image: chirptools:latest  
+    ports:
+      - "5000:5000"  # Expose port 5000 on your host to port 5000 in the container
+    environment:
+      - PYTHONUNBUFFERED=1  # Ensures immediate logging output
+      - ENV=${ENV}
+      - CHIRP_URL=${CHIRP_URL}
+      - CHIRP_TENANT=${CHIRP_TENANT}
+      - CHIRP_API_KEY=${CHIRP_API_KEY}
+      - SNIPE_URL=${SNIPE_URL}
+      - SNIPE_API_KEY=${SNIPE_API_KEY}
