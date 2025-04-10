@@ -1,9 +1,9 @@
-```markdown
-# ChirpTools
+
+## ChirpTools
 
 A Flask application to manage ChirpStack assets (bulk import, bulk move, bulk delete, etc.).
 
-## 📦 Requirements
+## 📦 Requirements ::
 
 - Git
 - Python 3.9+
@@ -72,3 +72,8 @@ App will be accessible at: `http://localhost:5000`
 
 ---
 
+## **Warning:**
+
+⚠️ <span>Authentication is not yet implemented.  
+🚫 <span style="color:red">Do not expose this app to the public.</span>  
+🔒 <span style="color:red">Keep it local until authentication is added.</span>
