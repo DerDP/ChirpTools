@@ -29,6 +29,10 @@
                 <div class="ant-page-header-heading-left">
                     <span class="ant-page-header-heading-title" title="Applications">Applications</span>
                 </div>
+				<div class="search-container">
+					<input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for App names...">
+					<button class="clear-btn" onclick="clearSearch()">×</button>
+				</div>
             </div>
         </div>
         <div class="ant-space-item">
@@ -63,20 +67,4 @@
         </div>
     </div>
 </div>
-<script>
-const spinner = document.querySelector(".spinner");
-const body = document.querySelector("body");
-
-
-function loading() {
-   spinner.style.visibility = 'visible';
-   body.style.overflow = 'hidden';
-}
-window.onpageshow = function(event) {
-    if (event.persisted) {
-          body.style.overflow = 'auto';
-    spinner.style.visibility = 'hidden';
-    }
- }
-</script>
 {% endblock %}

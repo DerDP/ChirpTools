@@ -42,6 +42,10 @@
                     <span class="ant-page-header-heading-sub-title" title="application id: {{ id }}">application id: {{
                         id }}</span>
                 </div>
+				<div class="search-container">
+					<input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search Devices ...">
+					<button class="clear-btn" onclick="clearSearch()">×</button>
+				</div>
             </div>
         </div>
     </div>

@@ -30,8 +30,6 @@ const popupContainer_snipeImport = document.querySelector(".popup-container-snip
 const closePopupButton_move = document.getElementById("close-popup-move");
 const closePopupButton_delete = document.getElementById("close-popup-delete");
 const closePopupButton_snipeImport = document.getElementById("close-popup-snipeImport");
-const spinner = document.querySelector(".spinner");
-const body = document.querySelector("body");
 const snipeInfo = document.querySelector(".snipe-info");
 
 
@@ -147,7 +145,3 @@ $(".checkbox").change(function() {
       controls.style.visibility = 'hidden';
    }
 });
-
-
-
-

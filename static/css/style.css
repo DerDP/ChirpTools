@@ -16821,6 +16821,7 @@ textarea.ant-mentions{
 }
 .ant-page-header.has-breadcrumb{
   padding-top:12px
+
 }
 .ant-page-header.has-footer{
   padding-bottom:0
@@ -32140,4 +32141,50 @@ pre{
 		stroke-dasharray: 90, 150;
 		stroke-dashoffset: -120px;
 	}
+}
+
+.search-container {
+	position: relative;
+	max-width: 300px;
+}
+
+.search-container input {
+	width: 100%;
+	padding:
+  8px 30px 8px 16px;
+	font-size: 16px;
+	border:
+  2px solid #ccc;
+	border-radius:
+  10px;
+	background-color: #fff;
+	box-sizing: border-box;
+	transition:
+  border-color 0.3s;
+}
+
+.search-container input:focus {
+	border-color: #007bff;
+	outline: none;
+}
+
+.search-container .clear-btn {
+	position: absolute;
+	top: 50%;
+	right: 10px;
+	transform: translateY(-50%);
+	font-size: 18px;
+	color: #aaa;
+	background: none;
+	border: none;
+	cursor: pointer;
+	transition: color 0.3s;
+}
+
+.search-container .clear-btn:hover {
+	color: #007bff;
+}
+
+.hidden {
+	display: none;
 }
