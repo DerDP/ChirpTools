@@ -43,5 +43,5 @@ window.onpageshow = function(event) {
 	function clearSearch() {
 		var input = document.getElementById("searchInput");
 		input.value = '';
-		searchTable();  // Reapply the search (will show all rows)
+		searchTable(); 
 	}
