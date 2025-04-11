@@ -19,7 +19,12 @@ window.onpageshow = function(event) {
 		filter = input.value.toLowerCase();
 		table = document.querySelector("table");
 		rows = table.querySelectorAll("tbody tr");
-		
+		clearSearchButton = document.getElementById("clearSearchButton");
+		if (input.value.length > 0) {
+			clearSearchButton.classList.remove("hidden");
+		} else {
+			clearSearchButton.classList.add("hidden");
+		}
 		for (i = 0; i < rows.length; i++) {
 			cells = rows[i].querySelectorAll("td");
 			matchFound = false;

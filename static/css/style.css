@@ -16821,7 +16821,6 @@ textarea.ant-mentions{
 }
 .ant-page-header.has-breadcrumb{
   padding-top:12px
-
 }
 .ant-page-header.has-footer{
   padding-bottom:0
@@ -32144,47 +32143,47 @@ pre{
 }
 
 .search-container {
-	position: relative;
-	max-width: 300px;
-}
+		position: relative;
+		max-width: 300px;
+		margin-bottom: 20px;
+	}
 
-.search-container input {
-	width: 100%;
-	padding:
-  8px 30px 8px 16px;
-	font-size: 16px;
-	border:
-  2px solid #ccc;
-	border-radius:
-  10px;
-	background-color: #fff;
-	box-sizing: border-box;
-	transition:
-  border-color 0.3s;
-}
+	.search-container input {
+		width: 100%;
+		padding: 12px 40px 12px 16px;
+		font-size: 16px;
+		border: 2px solid #ccc;
+		border-radius: 5px;
+		background-color: #fff;
+		box-sizing: border-box;
+		transition: border-color 0.3s;
+	}
 
-.search-container input:focus {
-	border-color: #007bff;
-	outline: none;
-}
+	.search-container input:focus {
+		border-color: #007bff;
+		outline: none;
+	}
 
-.search-container .clear-btn {
-	position: absolute;
-	top: 50%;
-	right: 10px;
-	transform: translateY(-50%);
-	font-size: 18px;
-	color: #aaa;
-	background: none;
-	border: none;
-	cursor: pointer;
-	transition: color 0.3s;
-}
+	.search-container .clear-btn {
+		position: absolute;
+		top: 45%;
+		right: -5px;
+		transform: translateY(-50%);
+		font-size: 27px;
+		color: #aaa;
+		background:
+	  none;
+		border:
+	  none;
+		cursor: pointer;
+		transition:
+	  color 0.3s;
+	}
 
-.search-container .clear-btn:hover {
-	color: #007bff;
-}
+	.search-container .clear-btn:hover {
+		color: #007bff;
+	}
 
-.hidden {
-	display: none;
-}
+	.hidden {
+		display: none;
+	}
