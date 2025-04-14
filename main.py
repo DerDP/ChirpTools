@@ -465,7 +465,6 @@ def list_devices(id, snipeIT):
     device_list = []
     try:
         for dev in devices["result"]:
-            print(dev["name"])
             name = dev["name"]
             devEui = dev["devEui"]
             createdAt = datetime.strptime(dev['createdAt'], "%Y-%m-%dT%H:%M:%S.%fZ").strftime("%Y-%m-%d %H:%M:%S")
