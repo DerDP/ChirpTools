@@ -1,0 +1,82 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="/static/img/favicon.png">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+
+<body data-new-gr-c-s-check-loaded="8.909.0" data-gr-ext-installed="" data-gr-ext-disabled="forever">
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div class="spinner">
+        <svg viewBox="25 25 50 50">
+            <circle cx="50" cy="50" r="20" fill="none" class="path"></circle>
+        </svg>
+    </div>
+    <div id="root">
+        <section class="ant-layout" style="min-height: 100vh;">
+            <header class="ant-layout-header layout-header">
+                <div><a href="/" >
+                        <h1>{{title}}</h1>
+                </div>
+            </header>
+            <section class="ant-layout ant-layout-has-sider layout">
+                <aside class="ant-layout-sider ant-layout-sider-light layout-menu"
+                    style="flex: 0 0 300px; max-width: 300px; min-width: 300px; width: 300px;">
+                    <div class="ant-layout-sider-children">
+                        <div>
+                            <ul class="ant-menu ant-menu-root ant-menu-inline ant-menu-light" role="menu" tabindex="0"
+                                data-menu-list="true">
+                                <li class="ant-menu-submenu ant-menu-submenu-inline ant-menu-submenu-open" role="none">
+                                    <ul class="ant-menu ant-menu-sub ant-menu-inline"
+                                        id="rc-menu-uuid-18687-1-tenant-popup" data-menu-list="true" style="">
+                                        <li role="menuitem" tabindex="-1"
+                                            data-menu-id="rc-menu-uuid-18687-1-tenant-applications"
+                                            style="padding-left: 48px;" class="ant-menu-item ant-menu-item-selected">
+                                            <span role="img" aria-label="appstore"
+                                                class="anticon anticon-appstore ant-menu-item-icon">
+												<svg xmlns="http://www.w3.org/2000/svg" height="10" width="10" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M64 32C28.7 32 0 60.7 0 96l0 64c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-64c0-35.3-28.7-64-64-64L64 32zm280 72a24 24 0 1 1 0 48 24 24 0 1 1 0-48zm48 24a24 24 0 1 1 48 0 24 24 0 1 1 -48 0zM64 288c-35.3 0-64 28.7-64 64l0 64c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-64c0-35.3-28.7-64-64-64L64 288zm280 72a24 24 0 1 1 0 48 24 24 0 1 1 0-48zm56 24a24 24 0 1 1 48 0 24 24 0 1 1 -48 0z"/></svg>
+                                            </span>
+                                            <span class="ant-menu-title-content"><a
+                                                    href="{{ url_for('app_list') }}">Applications</a></span>
+                                        </li>
+                                        <li role="menuitem" tabindex="-1"
+                                            data-menu-id="rc-menu-uuid-18687-1-tenant-applications"
+                                            style="padding-left: 48px;" class="ant-menu-item">
+                                            <span role="img" aria-label="appstore"
+                                                class="anticon anticon-appstore ant-menu-item-icon">
+												<svg xmlns="http://www.w3.org/2000/svg" height="10" width="10" viewBox="0 0 512 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M288 109.3L288 352c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-242.7-73.4 73.4c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l128-128c12.5-12.5 32.8-12.5 45.3 0l128 128c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L288 109.3zM64 352l128 0c0 35.3 28.7 64 64 64s64-28.7 64-64l128 0c35.3 0 64 28.7 64 64l0 32c0 35.3-28.7 64-64 64L64 512c-35.3 0-64-28.7-64-64l0-32c0-35.3 28.7-64 64-64zM432 456a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"/></svg>
+                                            </span>
+                                            <span class="ant-menu-title-content"><a
+                                                    href="{{ url_for('import_device') }}">Import</a></span>
+                                        </li>
+                                                                                <li role="menuitem" tabindex="-1"
+                                            data-menu-id="rc-menu-uuid-18687-1-tenant-applications"
+                                            style="padding-left: 48px;" class="ant-menu-item">
+                                            <span role="img" aria-label="appstore"
+                                                class="anticon anticon-appstore ant-menu-item-icon">
+												<svg xmlns="http://www.w3.org/2000/svg" height="10" width="11.25" viewBox="0 0 576 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z"/></svg>
+                                            </span>
+                                            <span class="ant-menu-title-content"><a
+                                                    href="{{ url_for('check') }}">Device Check</a></span>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+                <main class="ant-layout-content layout-content" style="padding: 24px;">
+                    {% block content %}
+                    {% endblock %}
+                </main>
+            </section>
+        </section>
+    </div>
+	<script src="/static/js/main.js"></script>
+</body>
+
+</html>

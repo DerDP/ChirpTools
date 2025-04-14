@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="ant-space ant-space-vertical" style="width: 100%; gap: 24px;">
+    <div class="ant-space-item" style="">
+        <div class="ant-page-header has-breadcrumb ant-page-header-ghost">
+            <nav class="ant-breadcrumb">
+                <ol>
+                    <li>
+                        <span class="ant-breadcrumb-link">
+                            <span>Tenants</span>
+                        </span>
+                        <span class="ant-breadcrumb-separator">/</span>
+                    </li>
+                    <li>
+                        <span class="ant-breadcrumb-link">
+                            <span>{{tenant}}</span>
+                        </span>
+                        <span class="ant-breadcrumb-separator">/</span>
+                    </li>
+                    <li>
+                        <span class="ant-breadcrumb-link">
+                            <span>Applications</span>
+                        </span>
+                        <span class="ant-breadcrumb-separator">/</span>
+                    </li>
+                </ol>
+            </nav>
+            <div class="ant-page-header-heading">
+                <div class="ant-page-header-heading-left">
+                    <span class="ant-page-header-heading-title" title="Applications">Applications</span>
+                </div>
+				<div class="search-container">
+					<input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search for Apps...">
+					<button id="clearSearchButton" class="clear-btn hidden"  onclick="clearSearch()">×</button>
+				</div>
+            </div>
+        </div>
+        <div class="ant-space-item">
+            <div class="ant-table-wrapper">
+                <div class="ant-spin-nested-loading">
+                    <div class="ant-spin-container">
+                        <div class="ant-table">
+                            <div class="ant-table-container">
+                                <div class="ant-table-content">
+                                    <table style="table-layout: auto;">
+                                        <colgroup>
+                                            <col style="width: 250px;">
+                                        </colgroup>
+                                        <thead class="ant-table-thead">
+                                            <tr>
+                                                <th class="ant-table-cell">Name</th>
+                                                <th class="ant-table-cell">Created At</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="ant-table-tbody">
+                                            {% for app in result | sort %}
+                                            {{app | safe}}
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

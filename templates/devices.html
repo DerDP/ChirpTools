@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="ant-space ant-space-vertical" style="width: 100%; gap: 24px;">
+    <div class="ant-space-item" style="">
+        <div class="ant-page-header has-breadcrumb ant-page-header-ghost">
+            <nav class="ant-breadcrumb">
+                <ol>
+                    <li>
+                        <span class="ant-breadcrumb-link">
+                            <span>Tenants</span>
+                        </span>
+                        <span class="ant-breadcrumb-separator">/</span>
+                    </li>
+                    <li>
+                        <span class="ant-breadcrumb-link">
+                            <span>
+                                {{tenant}}
+                            </span>
+                        </span>
+                        <span class="ant-breadcrumb-separator">/</span>
+                    </li>
+                    <li>
+                        <span class="ant-breadcrumb-link">
+                            <span>
+                                <a href="{{ url_for('app_list') }}">Applications</a>
+                            </span>
+                        </span>
+                        <span class="ant-breadcrumb-separator">/</span>
+                    </li>
+                    <li>
+                        <span class="ant-breadcrumb-link">
+                            <span>{{ current_app_name }}</span>
+                        </span>
+                        <span class="ant-breadcrumb-separator">/</span>
+                    </li>
+                </ol>
+            </nav>
+            <div class="ant-page-header-heading">
+                <div class="ant-page-header-heading-left">
+                    <span id="current_app_name" class="ant-page-header-heading-title" title="{{ current_app_name }}">{{
+                        current_app_name }}</span>
+                    <span class="ant-page-header-heading-sub-title" title="application id: {{ id }}">application id: {{
+                        id }}</span>
+                </div>
+				<div class="search-container">
+					<input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search Devices ...">
+					<button id="clearSearchButton" class="clear-btn hidden" onclick="clearSearch()">×</button>
+				</div>
+            </div>
+        </div>
+    </div>
+    <div class="ant-space-item">
+        <div class="ant-card ant-card-bordered">
+            <div class="ant-card-body">
+                <div style="display: none;" aria-hidden="true"></div>
+                <div class="ant-space ant-space-vertical" style="width: 100%; gap: 24px;">
+                    <div class="ant-space-item" style=""></div>
+                    <div class="ant-space-item">
+                        <div class="ant-table-wrapper">
+                            <div class="ant-spin-nested-loading">
+                                <div class="ant-spin-container">
+                                    <div class="ant-table">
+                                        <div class="ant-table-container">
+                                            <div class="ant-table-content">
+                                                <form method="post" action="/update">
+                                                    <div class="ant-space-item" style="">
+                                                        <div class="controls ant-space ant-space-horizontal ant-space-align-center"
+                                                            style="float: right; gap: 8px;">
+                                                            <div class="ant-space-item" style="">
+                                                                <button type="button" class="ant-btn ant-btn-primary"
+                                                                    onclick="openPopup_move()">Move
+                                                                    </a>
+                                                                </button>
+                                                            </div>
+                                                            <div class="ant-space-item" style="">
+                                                                <button type="button" class="ant-btn ant-btn-primary"
+                                                                    onclick="openPopup_snipeImport()">Snipe Import (WIP)
+                                                                    </a>
+                                                                </button>
+                                                            </div>
+                                                            <div class="ant-space-item">
+                                                                <button type="button"
+                                                                    class="ant-btn ant-btn-primary ant-btn-dangerous"
+                                                                    onclick="openPopup_delete()">Delete</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <br>
+                                                    {% if not snipeIT %}
+                                                    <div class="ant-space-item" style="">
+                                                        <button type="button" class="ant-btn ant-btn-primary" onclick="loading()"><a href="{{ url_for('list_devices', id=id, snipeIT='snipeIT' )}}">SnipeIT Check</a></button>
+                                                        <br>
+                                                        <br>
+                                                    </div>
+                                                    {% endif %}
+                                                    <table style="table-layout: auto;">
+                                                        <colgroup>
+                                                            <col class="ant-table-selection-col">
+                                                            <col style="width: 250px;">
+                                                            <col style="width: 250px;">
+                                                        </colgroup>
+                                                        <thead class="ant-table-thead">
+                                                            <tr>
+                                                                <th class="ant-table-cell ant-table-selection-column">
+                                                                    <label class="label-container">
+                                                                        <input class="checkbox" type="checkbox"
+                                                                            id="checkAll" onclick='select_deselect()'>
+                                                                        <span class="checkmark"></span>
+                                                                    </label>
+                                                                </th>
+                                                                <th class="ant-table-cell">Name</th>
+                                                                <th class="ant-table-cell">DevEUI</th>
+                                                                <th class="ant-table-cell">Created At</th>
+                                                                <th class="ant-table-cell">Description</th>
+                                                                <th class="ant-table-cell">Device Profile</th>
+                                                                {% if snipeIT %}
+                                                                <th class="ant-table-cell">SnipeIT</th>
+                                                                {% endif %}
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="ant-table-tbody">
+                                                            {% for device in devices %}
+                                                            {{device | safe}}
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                    <div id="popup-overlay-move">
+                                                        <div class="popup-container">
+                                                            <div class="popup-card">
+                                                                <h1 id="app_name">{{ current_app_name }}</h1>
+                                                                <div class="field select-dropdown" id="showApps">
+                                                                    <select name="newApp" id="appDropDown"
+                                                                        onchange="appChange()">
+                                                                        <option id="default_select" value="default"
+                                                                            selected="selected">Select target app</option>
+                                                                        {% for app in apps %}
+																			{% if app | regex_search('id="([^"]+)"') != current_app_name %}
+                                                                        		{{app | safe}}
+																			{% endif %}	
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                                <div class="field btns">
+                                                                    <button name="submit" id="submit" type="submit"
+                                                                        class="ant-btn ant-btn-primary"
+                                                                        value="move">Submit</button>
+                                                                    <button class="ant-btn ant-btn-primary"
+                                                                        type="button"
+                                                                        id="close-popup-move">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="popup-overlay-delete">
+                                                        <div class="popup-container-delete">
+                                                            <div class="popup-card">
+                                                                <h1 id="app_name">Are you sure?</h1>
+                                                                <div class="field btns">
+                                                                    <button name="submit" type="submit" value="delete"
+                                                                        class="ant-btn ant-btn-primary ant-btn-dangerous">Yes</button>
+                                                                    <button type="button" id="close-popup-delete"
+                                                                        class="ant-btn ant-btn-primary">No</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="popup-overlay-snipeImport">
+                                                        <div class="popup-container-snipeImport">
+                                                            <div class="popup-card">
+                                                                <h1 id="app_name">Are you sure?</h1>
+                                                                <div class="field btns">
+                                                                    <button name="submit" type="submit" value="snipeImport"
+                                                                        class="ant-btn ant-btn-primary ant-btn-dangerous">Yes</button>
+                                                                    <button type="button" id="close-popup-snipeImport"
+                                                                        class="ant-btn ant-btn-primary">No</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{url_for('static', filename='js/script.js')}}"></script>
+{% endblock %}

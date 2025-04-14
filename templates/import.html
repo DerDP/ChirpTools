@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="ant-space ant-space-vertical" style="width: 100%; gap: 24px;">
+    <div class="ant-space-item" style="">
+        <div class="ant-page-header has-breadcrumb ant-page-header-ghost">
+            <nav class="ant-breadcrumb">
+                <ol>
+                    <li><span class="ant-breadcrumb-link"><span>Tenants</span></span><span
+                            class="ant-breadcrumb-separator">/</span></li>
+                    <li><span class="ant-breadcrumb-link"><span>{{tenant}}</span></span><span
+                            class="ant-breadcrumb-separator">/</span></li>
+                    <li><span class="ant-breadcrumb-link"><span>Import</span></span><span
+                            class="ant-breadcrumb-separator">/</span></li>
+                </ol>
+            </nav>
+            <div class="ant-page-header-heading">
+                <div class="ant-page-header-heading-left"><span class="ant-page-header-heading-title"
+                        title="Import">Import</span></div>
+            </div>
+        </div>
+        <div class="ant-card ant-card-bordered">
+            <div class="ant-card-body">
+                <form class="ant-form ant-form-vertical" method="post" action="/db_import">
+                    <div class="ant-tabs ant-tabs-top">
+                        <div class="ant-tabs-content-holder">
+                            <div class="ant-tabs-content ant-tabs-content-top">
+                                <div role="tabpanel" tabindex="0" aria-hidden="false"
+                                    class="ant-tabs-tabpane ant-tabs-tabpane-active" id="rc-tabs-0-panel-1"
+                                    aria-labelledby="rc-tabs-0-tab-1">
+                                    <div class="ant-row ant-form-item">
+                                        <div class="ant-col ant-form-item-label"><label for="name"
+                                                class="ant-form-item-required" title="Name">Add Devices EUI</label>
+                                        </div>
+                                        <div class="ant-col ant-form-item-control">
+                                            <div class="ant-form-item-control-input">
+                                                <div class="ant-form-item-control-input-content"><textarea required
+                                                        class='ant-input' name="eui" id="EUI_Text"
+                                                        placeholder="One EUI per line!"></textarea></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ant-row ant-form-item">
+                                        <div class="ant-col ant-form-item-label"><label for="name"
+                                                class="ant-form-item-required" title="Name">Add Application IDs</label></div>
+                                        <div class="ant-col ant-form-item-control">
+                                            <div class="ant-form-item-control-input">
+                                                <div class="ant-form-item-control-input-content"><textarea required
+                                                        class='ant-input' name="appid" id="AppID_Text" class="default"
+                                                        placeholder="One AppID per line!"></textarea></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ant-row ant-form-item">
+                                        <div class="ant-col ant-form-item-label"><label for="name"
+                                                class="ant-form-item-required" title="Name">Add Device
+                                                Profiles IDs</label></div>
+                                        <div class="ant-col ant-form-item-control">
+                                            <div class="ant-form-item-control-input">
+                                                <div class="ant-form-item-control-input-content"><textarea required
+                                                        class='ant-input' name="device_profile" id="ProfileID_Text"
+                                                        class="default"
+                                                        placeholder="One Device Profile per line!"></textarea></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ant-row ant-form-item">
+                                        <div class="ant-col ant-form-item-label"><label for="name"
+                                                class="ant-form-item-required" title="Name">Add Names</label></div>
+                                        <div class="ant-col ant-form-item-control">
+                                            <div class="ant-form-item-control-input">
+                                                <div class="ant-form-item-control-input-content"><textarea required
+                                                        class='ant-input' name="name" id="Name_Text" class="default"
+                                                        placeholder="One Name per line!"></textarea></textarea></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ant-row ant-form-item">
+                                        <div class="ant-col ant-form-item-label"><label for="name"
+                                                class="ant-form-item-required" title="Name">Add Application
+                                                Keys</label></div>
+                                        <div class="ant-col ant-form-item-control">
+                                            <div class="ant-form-item-control-input">
+                                                <div class="ant-form-item-control-input-content"><textarea required
+                                                        class='ant-input' name="appkey" id="AppKey_Text" class="default"
+                                                        placeholder="One App_Key per line!"></textarea></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ant-row ant-form-item">
+                        <div class="ant-col ant-form-item-control">
+                            <div class="ant-form-item-control-input">
+                                <div class="ant-form-item-control-input-content">
+									<button type="submit" class="ant-btn ant-btn-primary" onclick="loading()"><span>Submit</span></button>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="popup-overlay">
+        <div class="popup-container">
+            <div class="popup-card">
+                <h1>Warning!</h1>
+                <div id="line_issue"></div>
+                <div class="field btns">
+                    <button class='close' type="button" id="close-popup">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{url_for('static', filename='js/import-script.js')}}"></script>
+<script>
+	const spinner = document.querySelector(".spinner");
+	const body = document.querySelector("body");
+	
+	
+	function loading() {
+		let isValid = true;
+		const requiredItems = document.querySelectorAll('.ant-form-item-required');
+	  
+		requiredItems.forEach((item) => {
+		  const textarea = item.closest('.ant-row').querySelector('textarea');
+
+	  
+		  if (!textarea.value.trim()) {
+			isValid = false;
+		  } 
+		});
+
+		if (isValid) {
+			spinner.style.visibility = 'visible';
+			body.style.overflow = 'hidden';
+		}	
+
+	}
+	window.onpageshow = function(event) {
+		if (event.persisted) {
+			  body.style.overflow = 'auto';
+		spinner.style.visibility = 'hidden';
+		}
+	 }
+	</script>
+{% endblock %}

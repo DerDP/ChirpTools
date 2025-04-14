@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="ant-space ant-space-vertical" style="width: 100%; gap: 24px;">
+    <div class="ant-space-item" style="">
+        <div class="ant-page-header has-breadcrumb ant-page-header-ghost">
+            <nav class="ant-breadcrumb">
+                <ol>
+                    <li>
+                        <span class="ant-breadcrumb-link">
+                            <span>Tenants</span>
+                        </span>
+                        <span class="ant-breadcrumb-separator">/</span>
+                    </li>
+                    <li>
+                        <span class="ant-breadcrumb-link">
+                            <span>
+                               {{tenant}}
+                            </span>
+                        </span>
+                        <span class="ant-breadcrumb-separator">/</span>
+                    </li>
+                    <li>
+                        <span class="ant-breadcrumb-link">
+                            <span>Device Check</span>
+                        </span>
+                        <span class="ant-breadcrumb-separator">/</span>
+                    </li>
+                </ol>
+            </nav>
+            <div class="ant-page-header-heading">
+                <div class="ant-page-header-heading-left">
+                    <span class="ant-page-header-heading-title" title="Applications">Device Check</span>
+                </div>
+            </div>
+        </div>
+        <div class="ant-space-item">
+            <div class="search">
+                <div class="ant-select ant-select-auto-complete ant-select-single ant-select-customize-input ant-select-show-search">
+                   <div class="ant-select-selector">
+                      <span class="ant-select-selection-search">
+                         <span class="ant-input-group-wrapper ant-input-search ant-select-selection-search-input" style="width: 500px; margin-top: -5px;">
+                            <span class="ant-input-wrapper ant-input-group">
+                               <input id="EUI_Text" placeholder="Search..."  type="text" value="" class="ant-input" aria-expanded="false" onchange="check()">
+                               <span class="ant-input-group-addon">
+                                  <button type="button" onclick="check()" class="ant-btn ant-btn-default ant-btn-icon-only ant-input-search-button">
+                                     <span role="img" aria-label="search" class="anticon anticon-search">
+                                        <svg viewBox="64 64 896 896" focusable="false" data-icon="search" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                           <path d="M909.6 854.5L649.9 594.8C690.2 542.7 712 479 712 412c0-80.2-31.3-155.4-87.9-212.1-56.6-56.7-132-87.9-212.1-87.9s-155.5 31.3-212.1 87.9C143.2 256.5 112 331.8 112 412c0 80.1 31.3 155.5 87.9 212.1C256.5 680.8 331.8 712 412 712c67 0 130.6-21.8 182.7-62l259.7 259.6a8.2 8.2 0 0011.6 0l43.6-43.5a8.2 8.2 0 000-11.6zM570.4 570.4C528 612.7 471.8 636 412 636s-116-23.3-158.4-65.6C211.3 528 188 471.8 188 412s23.3-116.1 65.6-158.4C296 211.3 352.2 188 412 188s116.1 23.2 158.4 65.6S636 352.2 636 412s-23.3 116.1-65.6 158.4z"></path>
+                                        </svg>
+                                     </span>
+                                  </button>
+                               </span>
+                            </span>
+                         </span>
+                      </span>
+                      <span class="ant-select-selection-placeholder"></span>
+                   </div>
+                </div>
+             </div>
+             {% if devEUI  %}
+             <br><br>
+             <div class="ant-card ant-card-bordered">
+            <table style="width:100%;table-layout: auto;">
+                <colgroup>
+                    <col class="ant-table-selection-col">
+                    <col style="width: 250px;">
+                    <col style="width: 250px;">
+                </colgroup>
+                <thead class="ant-table-thead">
+                    <tr>
+                        <th class="ant-table-cell">DevEUI</th>
+                        <th class="ant-table-cell">ChirpStack</th>
+                        <th class="ant-table-cell">SnipeIT</th>
+                    </tr>
+                </thead>
+                <tbody class="ant-table-tbody">
+                    {{dev_check | safe}}
+                </tbody>
+            </table>    
+             </div>
+            {% endif %}         
+        </div>
+    </div>
+    <div class="popup-overlay">
+        <div class="popup-container">
+            <div class="popup-card">
+                <h1>Warning!</h1>
+                <div id="line_issue"></div>
+                <div class="field btns">
+                    <button class='close' type="button" id="close-popup">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+const spinner = document.querySelector(".spinner");
+const body = document.querySelector("body");
+const snipeInfo = document.querySelector(".snipe-info");
+search = document.getElementById("EUI_Text");
+const active = document.getElementsByClassName("ant-menu-item");
+const popupOverlay = document.querySelector(".popup-overlay");
+const popupContainer = document.querySelector(".popup-container");
+const closePopupButton = document.getElementById("close-popup");
+
+$( document ).ready(function() {
+    active[0].className = "ant-menu-item"
+    active[1].className = "ant-menu-item"
+    active[2].className = "ant-menu-item ant-menu-item-selected"
+});
+
+function loading() {
+   spinner.style.visibility = 'visible';
+   body.style.overflow = 'hidden';
+}
+
+$( document ).ready(function() {
+    body.style.overflow = 'auto';
+    spinner.style.visibility = 'hidden';
+    search.focus();
+    $(".snipe-info").each(function(){
+       if ($(this).text() == 'True') {
+          this.style.color = 'Green';
+       }
+       else {
+          this.style.color = 'Red';
+       }
+     });
+ 
+ });
+
+ function check(){
+    checkRegex(/^(?:[A-Fa-f0-9]{2}){8}$|^0x([A-Fa-f0-9]{2},\s?){7}[A-Fa-f0-9]{2}$/, 'DevEUI', 'EUI_Text')
+ }
+
+ function openPopup() {
+    popupOverlay.style.display = "flex";
+    setTimeout(() => {
+        popupContainer.style.opacity = "1";
+        popupContainer.style.transform = "scale(1)";
+    }, 100);
+}
+
+function closePopup() {
+    popupContainer.style.opacity = "0";
+    popupContainer.style.transform = "scale(0.8)";
+    setTimeout(() => {
+        popupOverlay.style.display = "none";
+    }, 300);
+}
+
+
+closePopupButton.addEventListener("click", closePopup);
+
+
+function checkRegex(pattern, type, divId) {
+
+    const textField = document.getElementById(divId);
+    const lines = textField.value.split('\n');
+    let validLines = [];
+
+    document.getElementById("line_issue").innerHTML = ""
+    lines.forEach((line, index) => {
+        if (pattern.test(line.trim())) {
+
+            validLines.push(line);
+            search = document.getElementById("EUI_Text").value;
+            if ( search != ""){
+                window.location = ('/check/'+search);
+            }
+
+        }
+        if (!pattern.test(line.trim()) && line != "") {
+            document.getElementById("line_issue").innerHTML += `Value <b>'${line}'</b> is not valid ${type} !`
+            openPopup();
+        }
+    });
+
+    textField.value = validLines.join('\n');
+
+}
+
+
+</script>
+{% endblock %}

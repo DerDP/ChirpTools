@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="ant-space ant-space-vertical" style="width: 100%; gap: 24px;">
+    <div class="ant-space-item" style="">
+        <div class="ant-page-header has-breadcrumb ant-page-header-ghost">
+            <nav class="ant-breadcrumb">
+                <ol>
+                    <li><span class="ant-breadcrumb-link"><span>Tenants</span></span><span
+                            class="ant-breadcrumb-separator">/</span></li>
+                    <li><span class="ant-breadcrumb-link"><span>{{tenant}}</span></span><span
+                            class="ant-breadcrumb-separator">/</span></li>
+                    <li><span class="ant-breadcrumb-link"><span>{{action}}</span></span><span
+                            class="ant-breadcrumb-separator">/</span></li>
+                </ol>
+            </nav>
+            <div class="ant-page-header-heading">
+                <div class="ant-page-header-heading-left"><span class="ant-page-header-heading-title"
+                        title="Import">Move</span></div>
+            </div>
+        </div>
+        <div class="ant-card ant-card-bordered">
+            <div class="ant-card-body">
+                <div class="ant-tabs ant-tabs-top">
+                    <div class="ant-tabs-content-holder">
+                        <div class="ant-tabs-content ant-tabs-content-top">
+                            <div role="tabpanel" tabindex="0" aria-hidden="false"
+                                class="ant-tabs-tabpane ant-tabs-tabpane-active" id="rc-tabs-0-panel-1"
+                                aria-labelledby="rc-tabs-0-tab-1">
+                                {% if action == 'move' %}
+                                <div id="wrapper">
+                                    <div id="middle">
+                                        <div class="wrapper mybuttons">
+                                            {% if number > 0 %}
+                                            <h1>Success!</h1>
+                                            </br>
+                                            <hr>
+                                            </hr>
+                                            </br>
+                                            <div class="info">
+                                                <h2 style="color:#ee4848">{{number}} - ({% for device in devices %}
+                                                    {% if devices|length > 1 %}
+                                                    <a title="Home"
+                                                        href="https://{{server}}/#/tenants/{{tenant}}/applications/{{newApp[0]}}/devices/{{device | safe}}"
+                                                        target="_blank" class="tenth before after">{{device |
+                                                        safe}}</a>,
+                                                    {% else %}
+                                                    <a title="Home"
+                                                        href="https://{{server}}/#/tenants/{{tenant}}/applications/{{newApp[0]}}/devices/{{device | safe}}"
+                                                        target="_blank" class="tenth before after">{{device | safe}}</a>
+                                                    {% endif %}
+                                                    {% endfor %})
+                                                </h2>
+                                                {% if devices|length > 1 %}
+                                                <br>Devices are moved to the new app
+                                                {% else %}
+                                                <br>Device is moved to the new app
+                                                {% endif %}
+                                            </div>
+                                            </br></br>
+                                            {% else %}
+                                            <h1>Failed!</h1>
+                                            </br>
+                                            <hr>
+                                            </hr>
+                                            </br>
+                                            <div class="info">
+                                                <h2 style="color:#ee4848"> Überprüfen Sie die Logs </h2>
+                                            </div>
+                                            </br></br>
+                                            {% endif %}
+                                            <div class="ant-space-item left" style="">
+                                                <div class="controls ant-space ant-space-horizontal ant-space-align-center"
+                                                    style="float: left; gap: 8px; visibility: visible;">
+                                                    <div class="ant-space-item" style=""><a title="Home"
+                                                            href="{{ url_for('app_list') }}"
+                                                            class="tenth before after"><button type="button"
+                                                                class="ant-btn ant-btn-primary">Home</button></a></div>
+                                                    <div class="ant-space-item"><a title="Home"
+                                                            href="{{ url_for('list_devices', id=newApp[0]) }}"
+                                                             class="tenth before after"><button
+                                                                type="button" class="ant-btn ant-btn-primary"><span>Open
+                                                                    App</span></button></a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% elif action == 'importSnipe' %}
+                                <div id="wrapper">
+                                    <div id="middle">
+                                        <div class="wrapper mybuttons">
+                                            {% if number > 0 or skipped > 0 %}
+                                            {% if number > 0 %}
+                                            <h1>Success!</h1>
+                                            </br>
+                                            <hr>
+                                            </hr>
+                                            </br>
+                                            <div class="info">
+                                                <h2 style="color:#ee4848">{{number}} - ({% for device in snipeImport %}
+                                                    {% if snipeImport|length > 1 %} {{device | safe}},
+                                                    {% else %}
+                                                    {{device | safe}}
+                                                    {% endif %}
+                                                    {% endfor %})
+                                                </h2>
+                                                {% if snipeImport|length > 1 %}
+                                                Devices are imported to Snipe-IT<br>
+                                                {% else %}
+                                                Device is imported to Snipe-IT<br>
+                                                {% endif %}
+                                            {% endif %}    
+                                                {% if skipped > 0 %}
+                                                <h2 style="color:#ee4848">{{skipped}} - Skipped
+                                                {% endif %}
+                                            </div>
+                                            </br></br>
+                                            {% else %}
+                                            <h1>Failed!</h1>
+                                            </br>
+                                            <hr>
+                                            </hr>
+                                            </br>
+                                            <div class="info">
+                                                <h2 style="color:#ee4848"> Check the logs </h2>
+                                            </div>
+                                            </br></br>
+                                            {% endif %}
+                                            <div class="ant-space-item left" style="">
+                                                <div class="controls ant-space ant-space-horizontal ant-space-align-center"
+                                                    style="float: left; gap: 8px; visibility: visible;">
+                                                    <div class="ant-space-item" style=""><a title="Home"
+                                                            href="{{ url_for('app_list') }}"
+                                                            class="tenth before after"><button type="button"
+                                                                class="ant-btn ant-btn-primary">Home</button></a></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% elif action == 'import' %}
+                                <div id="wrapper">
+                                    <div id="middle">
+                                        <div class="wrapper mybuttons">
+                                            <h1>Summary</h1>
+                                            </br>
+                                            <hr>
+                                            </hr>
+                                            </br>
+                                            <div class="info">
+                                                <table>
+                                                    <tr>
+                                                        <th>Device Name</th>
+                                                        <th>ChirpStack</th>
+                                                        <th>SnipeIT</th>
+                                                    </tr>
+                                                    {% for summary in final %} {{name}}
+                                                    {{summary | safe}}
+                                                    {% endfor %}
+                                                    <!-- Add more rows as needed -->
+                                                </table>
+                                            </div>
+                                            </br></br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        const cellsWithTooltip = document.querySelectorAll('[data-tooltip]');
+
+                                        cellsWithTooltip.forEach(function (cell) {
+                                            cell.addEventListener('mouseover', function () {
+                                                const tooltip = document.createElement('div');
+                                                tooltip.className = 'tooltip';
+                                                tooltip.textContent = cell.getAttribute('data-tooltip');
+                                                document.body.appendChild(tooltip);
+
+                                                const rect = cell.getBoundingClientRect();
+                                                const tooltipRect = tooltip.getBoundingClientRect();
+
+                                                const top = rect.top + window.scrollY + (rect.height - tooltipRect.height) / 2;
+                                                const left = rect.left + window.scrollX + (rect.width - tooltipRect.width) / 2;
+
+                                                tooltip.style.top = top + 'px';
+                                                tooltip.style.left = left + 'px';
+
+                                                tooltip.style.display = 'block';
+                                            });
+
+                                            cell.addEventListener('mouseout', function () {
+                                                const tooltip = document.querySelector('.tooltip');
+                                                if (tooltip) {
+                                                    tooltip.parentNode.removeChild(tooltip);
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
+                                {% else %}
+                                <div id="wrapper">
+                                    <div id="middle">
+                                        <div class="wrapper mybuttons">
+                                            {% if number > 0 %}
+                                            <h1>Done!</h1>
+                                            </br>
+                                            <hr>
+                                            </hr>
+                                            </br>
+                                            <div class="info">
+                                                <h2 style="color:#ee4848">{{number}} - ({% for device in devices %}
+                                                    {% if devices|length > 1 %}
+                                                    {{device | safe}},
+                                                    {% else %}
+                                                    {{device | safe}}
+                                                    {% endif %}
+                                                    {% endfor %})
+                                                </h2>
+                                                {% if devices|length > 1 %}
+                                                <br>Devices are deleted
+                                                {% else %}
+                                                <br>Device is deleted
+                                                {% endif %}
+                                            </div>
+                                            </br></br>
+                                            {% else %}
+                                            <h1>Failed!</h1>
+                                            </br>
+                                            <hr>
+                                            </hr>
+                                            </br>
+                                            <div class="info">
+                                                <h2 style="color:#ee4848"> Überprüfen Sie die Logs </h2>
+                                            </div>
+                                            </br></br>
+                                            {% endif %}
+                                            <div class="ant-space-item left" style="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
