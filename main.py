@@ -30,6 +30,12 @@ snipe_headers = {
 now = datetime.now()
 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
 
+def isSnipeEnabled():
+    if snipe:
+        return True
+    else:
+        return False
+
 # Context processor to inject variables into all templates
 @app.context_processor
 def inject_globals():
@@ -63,7 +69,7 @@ def check_snipe(search):
     if snipe:
         models = requests.get(snipe_url, headers=snipe_headers).json()
     else:
-        return "snipeNotDefined"
+        return "Snipe-IT is not"
     if models["total"] == 0:
        return True
     else:
@@ -314,6 +320,7 @@ def grpc_import(devices):
                
                grpc_result.append("<td>"+device_name+"</td>")
                if (check_device(eui)) == 0:
+                   print(f'1. Chirp: {check_device(eui)}')
                    req = api.CreateDeviceRequest()
                    print(' Creating Device with DevEUI:',devices[dev]['eui'])
 
@@ -332,58 +339,61 @@ def grpc_import(devices):
                    resp = client.CreateKeys(req, metadata=auth_token)
                    
                    model = get_models(device_profileID)
-                   # grpc_result.append(('<a href="https://{{server}}/#/tenants/{{tenant}}/applications/{}/devices/{}/" target="_blank">Gerät "{}" wurde in ChirpStack importiert</a>').format(device_appId, device_eui, device_name))
+                   
                    grpc_result.append(f'<td class="passed" title="Location B Import Successful"><a href="https://{server}/#/tenants/{tenant}/applications/{device_appId}/devices/{device_eui}/" target="_blank" class="passed" title="Location A Import Successful">Imported</a></td>')
                    
-                   if(check_snipe(device_eui)):
-                   
+                   if(check_snipe(device_eui) and isSnipeEnabled()):
                         if model == 'check':
-                            # grpc_result.append(("Gerät mit DevEUI '{}' wurde nicht in SnipeIT importiert,<br><br> Geräteprofil '{}' hat zwei oder mehr passende Einträge in SnipeIT").format(device_eui, device_profileID ))
+                            
                             grpc_result.append('<td class="failed" data-tooltip="Device profile {device_profileID} has two or more matching entries in SnipeIT">Error</td>')
                         
                         elif model == 'empty':
                             import_id = snipe_import(device_eui, '2', '16', device_name, device_appKey, device_eui) 
-                            # grpc_result.append(('<a href="https://{{snipe}}/hardware/" target="_blank">Das Gerät "{}" wurde in SnipeIT im Fallback-Modell "Import" importiert.</a>').format(device_name))
-                            grpc_result.append(f'<td class="passed" title="Location B Import Successful"><a href="https://{snipe}/hardware/{str(import_id)}" target="_blank" class="passed" title="Device import to SnipeIT was successful">Imported</a></td>')
+                            
+                            grpc_result.append(f'<td class="passed" title="Location B Import Successful"><a href="https://{snipe}/hardware/{str(import_id)}" target="_blank" class="passed" title="Device import to Snipe-IT was successful">Imported</a></td>')
                             
                             
                         else:
                             import_id = snipe_import(device_eui, '2', model, device_name, device_appKey, device_eui)   
-                            # grpc_result.append(('<a href="https://{{snipe}}/models/{}" target="_blank">Gerät "{}" wurde in SnipetIT importiert</a>').format(model, device_name))   
-                            grpc_result.append(f'<td class="passed" title="Location B Import Successful"><a href="https://{snipe}/hardware/{str(import_id)}" target="_blank" class="passed" title="Device import to SnipeIT was successful">Imported</a></td>')
+                            
+                            grpc_result.append(f'<td class="passed" title="Location B Import Successful"><a href="https://{snipe}/hardware/{str(import_id)}" target="_blank" class="passed" title="Device import to Snipe-IT was successful">Imported</a></td>')
                             
 
                     
                    else:
-                        # grpc_result.append(("Gerät '{}' übersprungen (gefunden in SnipeIT)").format(device_eui))
-                        grpc_result.append('<td style="text-align: center;background: #ffc107;color: #2256d2;opacity: 0.7;cursor: help;" data-tooltip="Device skipped (found in SnipeIT)"">Skipped</td>')
-                   
+                        
+                        if isSnipeEnabled():
+                            grpc_result.append('<td style="text-align: center;background: #ffc107;color: #2256d2;opacity: 0.7;cursor: help;" data-tooltip="Device skipped (found in SnipeIT)"">Skipped</td>')
+                        else:
+                            grpc_result.append('<td style="text-align: center;background: #ffc107;color: #2256d2;opacity: 0.7;cursor: help;" data-tooltip="Snipe-IT is not configured"">Snipe-IT is not configured</td>')
                else:
-                   
+
                    model = get_models(device_profileID)
                    
-                   if(check_snipe(device_eui)):
-                   
+                   if(check_snipe(device_eui) and isSnipeEnabled()):
+
                         if model == 'check':
-                            # grpc_result.append(("Gerät mit DevEUI '{}' wurde nicht in SnipeIT importiert,<br><br> Geräteprofil '{}' hat zwei oder mehr passende Einträge in SnipeIT").format(device_eui, device_profileID ))
+                            
                             grpc_result.append('<td class="failed" data-tooltip="Device profile {device_profileID} has two or more matching entries in SnipeIT">Error</td>')
                         
                         elif model == 'empty':
                             import_id = snipe_import(device_eui, '2', '16', device_name, device_appKey, device_eui) 
-                            # grpc_result.append(('<a href="https://{{snipe}}/models/16" target="_blank">Das Gerät "{}" wurde in SnipeIT im Fallback-Modell "Import" importiert.</a>').format(device_name))
-                            grpc_result.append(f'<td class="passed" title="Location B Import Successful"><a href="https://{snipe}/hardware/{str(import_id)}" target="_blank" class="passed" title="Device import to SnipeIT was successful">Imported</a></td>')
+                            
+                            grpc_result.append(f'<td class="passed" title="Location B Import Successful"><a href="https://{snipe}/hardware/{str(import_id)}" target="_blank" class="passed" title="Device import to Snipe-IT was successful">Imported</a></td>')
                             
                             
                         else:
                             import_id = snipe_import(device_eui, '2', model, device_name, device_appKey, device_eui)   
-                            # grpc_result.append(('<a href="https://{{snipe}}/models/{}" target="_blank">Gerät "{}" wurde in SnipetIT importiert</a>').format(model, device_name))   
-                            grpc_result.append(f'<td class="passed" title="Location B Import Successful"><a href="https://{snipe}/hardware/{str(import_id)}" target="_blank" class="passed" title="Device import to SnipeIT was successful">Imported</a></td>')
+                            
+                            grpc_result.append(f'<td class="passed" title="Location B Import Successful"><a href="https://{snipe}/hardware/{str(import_id)}" target="_blank" class="passed" title="Device import to Snipe-IT was successful">Imported</a></td>')
                             
                         
                     
                    else:
-                        # grpc_result.append(("Gerät '{}' übersprungen (gefunden in SnipeIT)").format(device_eui))
-                        grpc_result.append('<td  style="text-align: center;background: #ffc107;color: #2256d2;opacity: 0.7;cursor: help;" data-tooltip="Device skipped (found in SnipeIT)"">Skipped</td>')
+                        if isSnipeEnabled():
+                            grpc_result.append('<td style="text-align: center;background: #ffc107;color: #2256d2;opacity: 0.7;cursor: help;" data-tooltip="Device skipped (found in SnipeIT)"">Skipped</td>')
+                        else:
+                            grpc_result.append('<td style="text-align: center;background: #ffc107;color: #2256d2;opacity: 0.7;cursor: help;" data-tooltip="Snipe-IT is not configured"">Snipe-IT is not configured</td>')
                 
                grpc_result.append("</tr>")
                         
@@ -394,7 +404,7 @@ def grpc_import(devices):
                grpc_result.append("Check that the number of devices in the text field matches")
                pass               
     except grpc.RpcError as e:
-        #print('error:',type(e))
+        
         if e.code() == grpc.StatusCode.INTERNAL:
             print('\n Import error device',devices[dev]['eui'],'\n Import aborted! Double check APP ID and Device Profile ID!\n\n Error: ', e)
             grpc_result.append(('Import error: Device {} Import canceled!. <br>Double-check the APP ID and device profile ID!<br><br> Error: <br>"{}"').format(devices[dev]['eui'], e))
@@ -436,10 +446,15 @@ def check(devEUI):
     dev_check = ""
     if devEUI:
         snipe_check = check_snipe(devEUI)
+
+        if isSnipeEnabled():
+            snipeValue = str(not snipe_check)
+        else:
+            snipeValue = "Snipe is not configured"
+            print(snipeValue)
         chirp_check = bool(check_chirp(devEUI))
-    if devEUI:
-        dev_check = '<td>'+devEUI+'</td><td class="snipe-info">'+str(chirp_check)+'</td><td class="snipe-info">'+str(not snipe_check)+'</td>'
-        dev_check = '<tr class="ant-table-row ant-table-row-level-0"><td class="ant-table-cell">'+devEUI+'</a></td><td class="snipe-info ant-table-cell">'+str(chirp_check)+'</td><td class="snipe-info ant-table-cell">'+str(not snipe_check)+'</td></tr>'
+        dev_check = f'<td>{devEUI}</td><td class="snipe-info">{str(chirp_check)}</td><td class="snipe-info">{snipeValue}</td>'
+        dev_check = f'<tr class="ant-table-row ant-table-row-level-0"><td class="ant-table-cell">{devEUI}</a></td><td class="snipe-info ant-table-cell">{str(chirp_check)}</td><td class="snipe-info ant-table-cell">{snipeValue}</td></tr>'
     return render_template('check.html', devEUI=devEUI, dev_check=dev_check) 
 
 # Define a custom Jinja2 filter for regex search
@@ -485,7 +500,7 @@ def list_devices(id, snipeIT):
 
     devices = device_list
     apps = app_list
-    return render_template('devices.html', devices=devices, apps=apps, app_id=app_id, current_app_name=current_app_name, id=id, snipeIT=snipeIT )
+    return render_template('devices.html', devices=devices, apps=apps, app_id=app_id, current_app_name=current_app_name, id=id, snipeIT=snipeIT, isSnipeEnabled=isSnipeEnabled() )
  
 
 #Update database
@@ -531,13 +546,13 @@ def index():
 
                     if model == 'empty':
                         import_id = snipe_import(device, '2', '16', device_name, device_appKey, device) 
-                        # grpc_result.append(('<a href="https://{{snipe}}/hardware/" target="_blank">Das Gerät "{}" wurde in SnipeIT im Fallback-Modell "Import" importiert.</a>').format(device_name))
+                        
                         snipeImport.append('<td class="passed" title="Location B Import Successful"><a href="https://{{snipe}}/hardware/'+str(import_id)+'" target="_blank" class="passed" title="Location A Import Successful">'+device+'</a></td>')
                         number+=1
                         
                     else:
                         import_id = snipe_import(device, '2', model, device_name, device_appKey, device)   
-                        # grpc_result.append(('<a href="https://{{snipe}}/models/{}" target="_blank">Gerät "{}" wurde in SnipetIT importiert</a>').format(model, device_name))   
+                        
                         snipeImport.append(('<td class="passed" title="Location B Import Successful"><a href="https://{{snipe}}/hardware/'+str(import_id)+'" target="_blank" class="passed" title="Location A Import Successful">'+device+'</a></td>').format(model))
                         number+=1
             return render_template('success.html', snipeImport=snipeImport, number=number,skipped=skipped, action=action, server=server, tenant=tenant)

@@ -72,12 +72,14 @@
                                                                     </a>
                                                                 </button>
                                                             </div>
+															{% if isSnipeEnabled %}
                                                             <div class="ant-space-item" style="">
                                                                 <button type="button" class="ant-btn ant-btn-primary"
                                                                     onclick="openPopup_snipeImport()">Snipe Import (WIP)
                                                                     </a>
                                                                 </button>
                                                             </div>
+															{% endif %}
                                                             <div class="ant-space-item">
                                                                 <button type="button"
                                                                     class="ant-btn ant-btn-primary ant-btn-dangerous"
@@ -87,7 +89,8 @@
                                                     </div>
                                                     <br>
                                                     <br>
-                                                    {% if not snipeIT %}
+                                                    {% if not snipeIT and isSnipeEnabled %}
+
                                                     <div class="ant-space-item" style="">
                                                         <button type="button" class="ant-btn ant-btn-primary" onclick="loading()"><a href="{{ url_for('list_devices', id=id, snipeIT='snipeIT' )}}">SnipeIT Check</a></button>
                                                         <br>
