@@ -533,12 +533,14 @@ def index():
             action = 'importSnipe'
             devices = request.form.getlist('device')
             snipeImport = []
+            
             for device in devices:
                 deviceResult = json.loads(get_profile(device))
                 deviceProfile = deviceResult["device"]["deviceProfileId"]
                 device_name = deviceResult["device"]["name"]
                 model = get_models(deviceProfile)
                 device_appKey = get_key(device)
+                
                 if(not check_snipe(device)):
                     skipped+=1
 
@@ -547,13 +549,13 @@ def index():
                     if model == 'empty':
                         import_id = snipe_import(device, '2', '16', device_name, device_appKey, device) 
                         
-                        snipeImport.append('<td class="passed" title="Location B Import Successful"><a href="https://{{snipe}}/hardware/'+str(import_id)+'" target="_blank" class="passed" title="Location A Import Successful">'+device+'</a></td>')
+                        snipeImport.append(f'<td class="passed" title="Location B Import Successful"><a href="https://{snipe}/hardware/'+str(import_id)+'" target="_blank" class="passed" title="Location A Import Successful">'+device+'</a></td>')
                         number+=1
                         
                     else:
                         import_id = snipe_import(device, '2', model, device_name, device_appKey, device)   
                         
-                        snipeImport.append(('<td class="passed" title="Location B Import Successful"><a href="https://{{snipe}}/hardware/'+str(import_id)+'" target="_blank" class="passed" title="Location A Import Successful">'+device+'</a></td>').format(model))
+                        snipeImport.append((f'<td class="passed" title="Location B Import Successful"><a href="https://{snipe}/hardware/'+str(import_id)+'" target="_blank" class="passed" title="Location A Import Successful">'+device+'</a></td>').format(model))
                         number+=1
             return render_template('success.html', snipeImport=snipeImport, number=number,skipped=skipped, action=action, server=server, tenant=tenant)
                 
